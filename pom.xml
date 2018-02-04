@@ -38,6 +38,13 @@
             <artifactId>weixin-java-cp</artifactId>
             <version>2.9.6.BETA</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.45</version>
+        </dependency>
+
     </dependencies>
 
 

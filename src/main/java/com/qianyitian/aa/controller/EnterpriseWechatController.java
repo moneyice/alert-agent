@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * * @author Qian Bing(https://www.qianyitian.com/)
@@ -24,17 +21,17 @@ public class EnterpriseWechatController {
     private WxCpService wxService;
 
     @RequestMapping(value = "/sendEnterpriseWechat", method = RequestMethod.POST)
-    public String sendEnterpriseWechat(@RequestBody EnterpriseWechatMessage message) {
+    public String sendEnterpriseWechat(@RequestParam String subject, @RequestParam String toUsers,@RequestParam String toParts,@RequestBody String body) {
         int agentID= wxService.getWxCpConfigStorage().getAgentId();
         WxCpMessage  wxCpMessage= WxCpMessage
                 .TEXT()
                 .agentId(agentID) // 企业号应用ID
                 .toUser("@all")
-                .content(message.getMessage())
+                .content(subject+ "\n" + body)
                 .build();
         try {
             wxService.messageSend(wxCpMessage);
-            logger.info("Enterprise wechat message send OK: " + message.getMessage());
+            logger.info("Enterprise wechat message send OK: " + body);
         } catch (Exception e) {
             logger.error("Enterprise wechat message send Failed", e);
             return "error: " + e.toString();

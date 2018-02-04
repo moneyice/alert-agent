@@ -2,16 +2,14 @@ package com.qianyitian.aa.controller;
 
 import javax.mail.internet.MimeMessage;
 
+import com.alibaba.fastjson.JSON;
 import com.qianyitian.aa.config.MailProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.qianyitian.aa.model.Email;
 /**
@@ -27,17 +25,17 @@ public class EmailController {
 	private JavaMailSender javaMailSender;
 
 	@RequestMapping(value = "/sendMail", method = RequestMethod.POST)
-	public String sendEmail(@RequestBody Email email) {
+	public String sendEmail(@RequestParam(required=true) String subject, @RequestParam(required=true) String toUsers, @RequestBody String body) {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		try {
-			String[] tos=email.getTo().split(";");
+			String[] tos=toUsers.split(";");
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			message.setFrom(mailProperties.getMailFrom());
 			helper.setTo(tos);
-			helper.setSubject(email.getSubject());
-			helper.setText(email.getMessage()); // true indicates html
+			helper.setSubject(subject);
+			helper.setText(body); // true indicates html
 			javaMailSender.send(message);
-			logger.info("Email send OK to " + email.getTo() + " subject: " + email.getSubject());
+			logger.info("Email send OK to " + toUsers + " subject: " + subject);
 		} catch (Exception e) {
 			logger.error("Email send Failed", e);
 			return "error: " + e.toString();

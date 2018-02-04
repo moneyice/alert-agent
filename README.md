@@ -11,21 +11,17 @@ http://server_address:port/swagger-ui.html
 ### email 使用
 仿照如下post 请求使用
 ```
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain' -d '{ \
-   "message": "报警的具体消息", \
-   "subject": "email 的标题", \
-   "to": "收件人1;收件人2;收件人3" \
- }' 'http://10.202.6.87:9001/sendMail'
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain' \
+-d '报警消息' 'http://10.202.6.87:9001/sendMail?subject=http-mq-agent(10.202.6.86)%E5%8F%91%E7%94%9F%E5%BC%82%E5%B8%B8 \
+&toUsers=ac_qianbing%40juran.com.cn%3B20926945%40qq.com'
 ```
 
 ### 企业微信使用
 仿照如下post 请求使用
 ```
-curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain' -d '{ \
-   "message": "要发送的报警消息", \
-   "toParty": "部门1Id|部门2Id, 目前是全员发送，此参数不起作用", \
-   "toUser": "用户1Id|用户2Id, 目前是全员发送，此参数不起作用" \
- }' 'http://10.202.6.87:9001/sendEnterpriseWechat'
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain' \
+-d '报警消息' 'http://10.202.6.87:9001/sendEnterpriseWechat?subject=%E5%87%BA%E9%97%AE%E9%A2%98%E4%BA%86 \
+&toUsers=qianbing%7Czhulang&toParts=1%7C2'
 ```
 
 ##### 使用者必须要先加入企业微信
